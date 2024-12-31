@@ -38,7 +38,6 @@ def polynomial_function(x, coefficients):
     for coeff in coefficients:
         result = result * x + coeff
     return result
-    # return sum(coefficients[i] * (x ** (m - i)) for i in range(m + 1))
  
  
 def main():

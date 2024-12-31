@@ -122,6 +122,7 @@ def create_schedule(n, m, p, r, d, s):
         else:
             left = middle
     return (left + right) / 2.
+
 def main():
     file_name = "cheese"
     sys.stdin = open(file_name + ".in", "r")
@@ -130,5 +131,6 @@ def main():
     p, r, d = map(list,zip(*[map(int,input().split()) for i in range(n)]))
     s = sorted([int(input()) for _ in range(m)], reverse=True)
     print(create_schedule(n, m, p, r, d, s))
+    
 if __name__ == "__main__":
     main()

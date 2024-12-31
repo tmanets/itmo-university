@@ -1,12 +1,7 @@
 import sys
 
 
-def main():
-    file_name = "p1p1sumu"
-    sys.stdin = open(file_name + ".in", "r")
-    sys.stdout = open(file_name + ".out", "w")
-
-    n, d1, d2, a, b, c, d = map(int, input().split())
+def solve(n, d1, d2, a, b, c, d):
     num = [0] * (n + 2)
     time = 0
 
@@ -35,7 +30,19 @@ def main():
         current = min(i - current_number, num[i])
         current_number += current
         time += current
-        
+
+    return time
+
+
+def main():
+    file_name = "p1p1sumu"
+    sys.stdin = open(file_name + ".in", "r")
+    sys.stdout = open(file_name + ".out", "w")
+
+    n, d1, d2, a, b, c, d = map(int, input().split())
+    
+    time = solve(n, d1, d2, a, b, c, d)
+    
     print(time)
 
 

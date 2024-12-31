@@ -1,7 +1,7 @@
-def solve():
-    with open("f2cmax.in", "r") as inp:
-        n = int(inp.readline())
-        p = [list(map(int,inp.readline().split())), list(map(int,inp.readline().split()))]
+import sys
+
+
+def solve(n, p):
     l = []
     r = []
         
@@ -17,10 +17,22 @@ def solve():
         t1, t2 = p[0][i - 1], p[1][i - 1]
         C1 += t1
         C2 = max(C1, C2) + t2
-    with open("f2cmax.out", "w") as out:
-        out.write(str(C2) + "\n")
-        out.write(" ".join(map(str, res)) + "\n")
-        out.write(" ".join(map(str, res)))
+
+    return C2, res
+
+
+def main():
+    file_name = "f2cmax"
+    sys.stdin = open(file_name + ".in", "r")
+    sys.stdout = open(file_name + ".out", "w")
+    
+    n = int(input())
+    p = [list(map(int,input().split())), list(map(int,input().split()))]
+    C2, res = solve(n, p)
+    print(C2)
+    print(*res)
+    print(*res)
+
 
 if __name__ == "__main__":
-    solve()
+    main()

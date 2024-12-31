@@ -83,42 +83,45 @@ class Network:
         return parent if distance[self.finish] < INF else None
     
 
-def main():
-    file_name = "p1p1sumu"
-    sys.stdin = open(file_name + ".in", "r")
-    sys.stdout = open(file_name + ".out", "w")
+def solve(n, m, p):
+    net = Network(2 + n + n * m, 0, 1)
 
-    job_size, machine_size = map(int, input().split())
-
-    times = []
-    for _ in range(job_size):
-        times.append(list(map(int, input().split())))
-
-    net = Network(2 + job_size + job_size * machine_size, 0, 1)
-
-    for i in range(job_size):
+    for i in range(n):
         net.emplace_edge(0, 2 + i, 1, 0)
 
-    for i in range(job_size * machine_size):
-        net.emplace_edge(2 + job_size + i, 1, 1, 0)
+    for i in range(n * m):
+        net.emplace_edge(2 + n + i, 1, 1, 0)
 
-    for i in range(job_size):
-        for j in range(machine_size):
-            for k in range(job_size):
-                net.emplace_edge(2 + i, 2 + job_size * (j + 1) + k, 1, (k + 1) * times[i][j])
+    for i in range(n):
+        for j in range(m):
+            for k in range(n):
+                net.emplace_edge(2 + i, 2 + n * (j + 1) + k, 1, (k + 1) * p[i][j])
 
     sum_c, flow = net.max_flow_min_cost()
-    result = [[-1] * job_size for _ in range(machine_size)]
+    result = [[-1] * n for _ in range(m)]
 
     for edge in flow:
-        if edge.from_ == 0 or edge.to == 1 or edge.from_ > 2 + job_size - 1 or edge.flow == 0:
+        if edge.from_ == 0 or edge.to == 1 or edge.from_ > 2 + n - 1 or edge.flow == 0:
             continue
 
-        k = job_size - 1 - (edge.to - 2) % job_size
-        j = (edge.to - 2) // job_size - 1
+        k = n - 1 - (edge.to - 2) % n
+        j = (edge.to - 2) // n - 1
         i = edge.from_ - 2
         result[j][k] = i
 
+    return sum_c, result
+
+
+def main():
+    file_name = "rsumc"
+    sys.stdin = open(file_name + ".in", "r")
+    sys.stdout = open(file_name + ".out", "w")
+
+    n, m = map(int, input().split())
+    p = [list(map(int, input().split())) for _ in range(n)]
+    
+    sum_c, result = solve(n, m, p)
+    
     print(sum_c)
     for i in result:
         count = sum(1 for j in i if j != -1)

@@ -1,22 +1,8 @@
+import sys
 import heapq
 
 
-def read_input():
-    with open("qsumci.in", "r") as inp:
-        n, m = map(int, inp.readline().split())
-        p = list(map(int, inp.readline().split()))
-        t = list(map(int, inp.readline().split()))
-    return n, m, p, t
-
-
-def write_output(res, s):
-    with open("qsumci.out", "w") as out:
-        out.write(str(res) + "\n")
-        out.write("\n".join(f"{mi} {si}" for mi,si in s))
-
-
-def solve():
-    n, m, p, t = read_input()
+def solve(n, m, p, t):
     queue = [(t[j], 1, j) for j in range(m)]
     heapq.heapify(queue)
 
@@ -36,9 +22,24 @@ def solve():
         res[index] = (j + 1, times[j])
         times[j] += t[j] * p[index]
         C += times[j]
-    
-    write_output(C, res)
 
+    return C, res
+
+
+def main():
+    file_name = "qsumci"
+    sys.stdin = open(file_name + ".in", "r")
+    sys.stdout = open(file_name + ".out", "w")
+
+    n, m = map(int, input().split())
+    p = list(map(int, input().split()))
+    t = list(map(int, input().split()))
+
+    C, res = solve(n, m, p, t)
+
+    print(C)
+    for mi, si in res:
+        print(mi, si)
 
 if __name__ == "__main__":
-    solve()
+    main()
