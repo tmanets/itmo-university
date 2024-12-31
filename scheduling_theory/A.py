@@ -1,8 +1,10 @@
 import sys
 from collections import deque
 
+
 INF = float('inf')
 EPS = 1e-10
+
 
 class Edge:
     def __init__(self, from_, to, capacity, cost, reverse):
@@ -80,7 +82,7 @@ class Network:
         return parent if distance[self.finish] < INF else None
     
 
-def is_schedulable(n, m, p, r, d, s, middle):
+def try_schedule(n, m, p, r, d, s, middle):
     boundaries = [(r[i], d[i] + middle) for i in range(n)]
     tmp = sorted(sum(boundaries,()))
     intervals = sorted(set(tmp))
@@ -111,17 +113,19 @@ def is_schedulable(n, m, p, r, d, s, middle):
             time_index += 1
 
     return net.max_flow_min_cost()
+
     
 def create_schedule(n, m, p, r, d, s):
     total = sum(p)
     left, right = 0, total
     for _ in range(37):
         middle = (left + right) / 2.
-        if abs(is_schedulable(n, m, p, r, d, s, middle) - total) <= EPS:
+        if abs(try_schedule(n, m, p, r, d, s, middle) - total) <= EPS:
             right = middle
         else:
             left = middle
     return (left + right) / 2.
+
 
 def main():
     file_name = "cheese"
@@ -131,6 +135,7 @@ def main():
     p, r, d = map(list,zip(*[map(int,input().split()) for i in range(n)]))
     s = sorted([int(input()) for _ in range(m)], reverse=True)
     print(create_schedule(n, m, p, r, d, s))
+
     
 if __name__ == "__main__":
     main()
